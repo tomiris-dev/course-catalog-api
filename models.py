@@ -1,12 +1,12 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from pydantic.alias_generators import to_camel
 
 
 class CamelModel(BaseModel):
     model_config = ConfigDict(
-        alias_generator=to_camel, #aliases in camelCase
+        alias_generator=to_camel,
         validate_by_name=True,
-        validate_by_alias=True, 
+        validate_by_alias=True,
     )
 
 
@@ -15,5 +15,14 @@ class Course(CamelModel):
     title: str
     description: str
     credits: int
-    is_effective: bool = False#в джейсон это будет isEffective
+    is_effective: bool = False #в JSON это будет isEffective
     likes: int = 0
+
+
+class EnrollmentIn(CamelModel):
+    course_id: str
+    student_name: str = Field(min_length=2)
+
+
+class Enrollment(EnrollmentIn):
+    id: int
