@@ -1,9 +1,17 @@
 from fastapi import FastAPI, HTTPException, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from data import find_course, get_all_courses
 from models import Course
 
 
 app = FastAPI(title="Course Catalog API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"], 
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 def pagination(page: int = 1, page_size: int = 20) -> dict:
     return {"offset": (page - 1) * page_size, "limit": page_size}
