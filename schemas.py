@@ -17,6 +17,7 @@ class CourseOut(CamelModel):
     credits: int
     is_effective: bool
     likes: int
+    level: str
 
 class StudentIn(CamelModel):
     name: str = Field(min_length=2)

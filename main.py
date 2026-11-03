@@ -51,12 +51,15 @@ def read_root():
 def list_courses(
     db: SessionDep,
     is_effective: bool | None = None,
+    level: str | None = None,  # <--- НОВОЕ
     sort: str = "popular",
     p: dict = Depends(pagination),
 ):
     stmt = select(Course)
     if is_effective is not None:
         stmt = stmt.where(Course.is_effective == is_effective)
+    if level is not None:     # <--- НОВОЕ
+        stmt = stmt.where(Course.level == level)
     if sort == "title":
         stmt = stmt.order_by(Course.title)
     else:
