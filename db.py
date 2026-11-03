@@ -1,6 +1,7 @@
 from datetime import datetime
+from collections.abc import Iterator
 from sqlalchemy import DateTime, MetaData, Text, create_engine
-from sqlalchemy.orm import DeclarativeBase, sessionmaker
+from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
 from config import settings
 
@@ -13,9 +14,7 @@ NAMING_CONVENTION = {
 }
 
 class Base(DeclarativeBase):
-
     metadata = MetaData(naming_convention=NAMING_CONVENTION)
-
     type_annotation_map = {
         str: Text,
         datetime: DateTime(timezone=True),
@@ -23,3 +22,7 @@ class Base(DeclarativeBase):
 
 engine = create_engine(settings.database_url, echo=settings.sql_echo)
 SessionLocal = sessionmaker(engine)
+
+def get_db() -> Iterator[Session]:
+    with SessionLocal() as session:
+        yield session
