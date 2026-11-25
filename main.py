@@ -5,6 +5,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from db import get_db
+from graphql_api import graphql_app
 from models import Course, Enrollment, Student
 import problem
 import services
@@ -24,6 +25,8 @@ app.add_middleware(
 )
 
 SessionDep = Annotated[Session, Depends(get_db)]
+
+app.include_router(graphql_app, prefix="/graphql")
 
 # -----------------------------
 def pagination(page: int = 1, page_size: int = 20):
