@@ -376,3 +376,7 @@ The unprotected database errors disclosed SQL text, schema names, and submitted 
 - The application rule and its error code are defined once in `services.py`; `problem.py` and the GraphQL resolver translate them into their own response formats. Duplicating the rule in both transports could make the two APIs disagree after a later change.
 - Loaders are created in the request context so their cache cannot leak between requests or become stale across users. The batch function maps each row to its key because SQL result order is not guaranteed; assigning by position can silently return another course.
 - `check_limit` and `parse_id` return actionable messages for invalid client input, while `MaskErrors` hides unexpected failures such as database exceptions. This two-layer approach helps clients fix their requests without disclosing internal SQL or schema details.
+
+## Bonus Task 1: Validation errors as Problem Details
+
+The `RequestValidationError` handler uses `exc.errors()` to get Pydantic's list of validation failures, then maps each item's location and message into `in`, `field`, and `detail`. A request with both a short name and an invalid email now returns 422 with `application/problem+json` and both entries in the `errors` array. The `errors` array is an extension because RFC 9457 defines common problem fields but does not require an API-specific list of invalid fields; the extension lets a client correct multiple values in one response.

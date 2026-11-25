@@ -35,7 +35,7 @@ CASES = [
         "/students",
         {"name": "N", "email": "n@example.com"},
         422,
-        None,
+        "validation-error",
     ),
 ]
 
