@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from db import get_db
 from graphql_api import graphql_app
 from models import Course, Enrollment, Student
+import counter
 import problem
 import services
 from schemas import (
@@ -16,6 +17,7 @@ from schemas import (
 
 app = FastAPI(title="Course Catalog API")
 problem.install(app)
+counter.install(app)
 
 app.add_middleware(
     CORSMiddleware,
